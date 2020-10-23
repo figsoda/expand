@@ -21,8 +21,6 @@
 //! }
 //! ```
 
-#![feature(extend_one)]
-
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use syn::{parse2, LitByteStr};
 
@@ -61,10 +59,10 @@ fn _expand(input: TokenStream) -> TokenStream {
     loop {
         match input.next() {
             Some(TokenTree::Group(t)) => {
-                output.extend_one(TokenTree::Group(Group::new(
+                output.extend(Some(TokenTree::Group(Group::new(
                     t.delimiter(),
                     _expand(t.stream()),
-                )));
+                ))));
             }
             Some(TokenTree::Punct(t)) if t.as_char() == '@' => {
                 let t = input
@@ -78,16 +76,16 @@ fn _expand(input: TokenStream) -> TokenStream {
 
                 match xs.next() {
                     None => panic!("cannot expand an empty byte string"),
-                    Some(x) => output.extend_one(TokenTree::Literal(Literal::u8_suffixed(x))),
+                    Some(x) => output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x)))),
                 }
 
                 for x in xs {
-                    output.extend_one(TokenTree::Punct(Punct::new(',', Spacing::Alone)));
-                    output.extend_one(TokenTree::Literal(Literal::u8_suffixed(x)));
+                    output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
+                    output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x))));
                 }
             }
             Some(t) => {
-                output.extend_one(t);
+                output.extend(Some(t));
             }
             None => break,
         }
