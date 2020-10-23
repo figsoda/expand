@@ -1,6 +1,9 @@
 use expand::expand;
 
 #[test]
-fn tests() {
-    assert_eq!(&expand!([@b"Hello, ", @b"world!"]), b"Hello, world!");
+fn hello_world() {
+    assert_eq!(
+        &expand!([@b"Hello,", b' ', @b"world", b'!']),
+        b"Hello, world!"
+    );
 }
