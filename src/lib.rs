@@ -1,8 +1,54 @@
+//! # expand
+//! 
+//! Macro to expand byte string literals
+//! 
+//! 
+//! ## Usage
+//! 
+//! ```rust
+//! use expand::expand;
+//! 
+//! assert_eq!(
+//!     &expand!([@b"Hello,", b' ', @b"world", b'!']),
+//!     b"Hello, world!"
+//! );
+//! 
+//! if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
+//!     assert_eq!(x, &b'e');
+//!     assert_eq!(y, &b'r');
+//! } else {
+//!     panic!("pattern matching failed");
+//! }
+//! ```
+
 #![feature(extend_one)]
 
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use syn::{parse2, LitByteStr};
 
+/// Expand byte string literals
+///
+/// Prefix byte strings with `@` to expand them
+///
+/// ## Examples
+///
+/// ```rust
+/// # use expand::expand;
+/// assert_eq!(
+///     &expand!([@b"Hello,", b' ', @b"world", b'!']),
+///     b"Hello, world!"
+/// );
+/// ```
+///
+/// ```rust
+/// # use expand::expand;
+/// if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
+///     assert_eq!(x, &b'e');
+///     assert_eq!(y, &b'r');
+/// } else {
+///     panic!("pattern matching failed");
+/// }
+/// ```
 #[proc_macro]
 pub fn expand(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     _expand(input.into()).into()
