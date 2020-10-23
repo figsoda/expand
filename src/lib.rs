@@ -21,6 +21,9 @@
 //! }
 //! ```
 
+#![no_std]
+#![deny(unsafe_code)]
+
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use syn::{parse2, LitByteStr};
 
