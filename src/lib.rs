@@ -21,11 +21,17 @@ fn _expand(input: TokenStream) -> TokenStream {
                 )));
             }
             Some(TokenTree::Punct(t)) if t.as_char() == '@' => {
-                let t = input.next().unwrap().into();
-                let mut xs = parse2::<LitByteStr>(t).unwrap().value().into_iter();
+                let t = input
+                    .next()
+                    .expect("expected a byte string literal after '@'")
+                    .into();
+                let mut xs = parse2::<LitByteStr>(t)
+                    .expect("expected a byte string literal after '@'")
+                    .value()
+                    .into_iter();
 
                 match xs.next() {
-                    None => panic!("bytestring needs to be longer"),
+                    None => panic!("cannot expand an empty byte string"),
                     Some(x) => output.extend_one(TokenTree::Literal(Literal::u8_suffixed(x))),
                 }
 
