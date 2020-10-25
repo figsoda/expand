@@ -19,4 +19,10 @@ if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
 } else {
     panic!("pattern matching failed");
 }
+
+if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
+    assert_eq!(xs, b"Hello, world!");
+} else {
+    panic!("pattern matching failed");
+}
 ```

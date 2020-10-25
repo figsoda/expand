@@ -19,6 +19,12 @@
 //! } else {
 //!     panic!("pattern matching failed");
 //! }
+//!
+//! if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
+//!     assert_eq!(xs, b"Hello, world!");
+//! } else {
+//!     panic!("pattern matching failed");
+//! }
 //! ```
 
 #![no_std]
@@ -46,6 +52,15 @@ use syn::{parse2, LitByteStr};
 /// if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
 ///     assert_eq!(x, &b'e');
 ///     assert_eq!(y, &b'r');
+/// } else {
+///     panic!("pattern matching failed");
+/// }
+/// ```
+///
+/// ``` rust
+/// # use expand::expand;
+/// if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
+///     assert_eq!(xs, b"Hello, world!");
 /// } else {
 ///     panic!("pattern matching failed");
 /// }

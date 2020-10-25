@@ -17,3 +17,12 @@ fn pattern_matching() {
         panic!("pattern matching failed");
     }
 }
+
+#[test]
+fn pattern_matching2() {
+    if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
+        assert_eq!(xs, b"Hello, world!");
+    } else {
+        panic!("pattern matching failed");
+    }
+}
