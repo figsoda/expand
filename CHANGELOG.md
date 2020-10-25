@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.1.2 - 2020-10-25
+
+### Features
+- Allow non byte string tokens after `@`
+
+
 ## v0.1.1 - 2020-10-24
 
 ### Features
