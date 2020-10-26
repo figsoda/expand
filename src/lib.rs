@@ -34,6 +34,7 @@
 #![forbid(unsafe_code)]
 
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
+use quote::quote_spanned;
 use syn::{parse2, LitByteStr};
 
 /// Expand byte string literals
@@ -104,7 +105,7 @@ fn _expand(input: TokenStream) -> TokenStream {
                 if let Some(x) = xs.next() {
                     output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x))));
                 } else {
-                    output.extend(quote::quote_spanned! { tt.span() =>
+                    output.extend(quote_spanned! { tt.span() =>
                         compile_error!("can't expand an empty byte string")
                     });
                     break;
