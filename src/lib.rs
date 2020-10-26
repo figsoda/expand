@@ -98,9 +98,13 @@ fn _expand(input: TokenStream) -> TokenStream {
                     continue;
                 };
 
-                match xs.next() {
-                    None => panic!("cannot expand an empty byte string"),
-                    Some(x) => output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x)))),
+                if let Some(x) = xs.next() {
+                    output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x))));
+                } else {
+                    output.extend(quote::quote_spanned! { tt.span() =>
+                        compile_error!("can't expand an empty byte string")
+                    });
+                    break;
                 }
 
                 for x in xs {
