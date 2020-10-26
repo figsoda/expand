@@ -1,5 +1,3 @@
-//! # expand
-//!
 //! Macro to expand byte string literals
 //!
 //!
@@ -26,6 +24,11 @@
 //!     panic!("pattern matching failed");
 //! }
 //! ```
+//!
+//!
+//! ## Changelog
+//!
+//! See [CHANGELOG.md](https://github.com/figsoda/expand/blob/main/CHANGELOG.md)
 
 #![no_std]
 #![forbid(unsafe_code)]
