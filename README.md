@@ -30,3 +30,8 @@ if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
     panic!("pattern matching failed");
 }
 ```
+
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/figsoda/expand/blob/main/CHANGELOG.md)
