@@ -1,7 +1,7 @@
 # Changelog
 
 
-## v0.1.3 - 2020-10-26
+## v0.1.3 - 2020-11-03
 
 ### Features
 - Improve error messages
