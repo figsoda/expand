@@ -9,7 +9,7 @@ documentation = "https://docs.rs/expand"
 homepage = "https://github.com/figsoda/expand"
 repository = "https://github.com/figsoda/expand"
 readme = "README.md"
-keywords = ["macro", "macros", "literal", "pattern", "proc-macro", "string"]
+keywords = ["macro", "macros", "literal", "pattern", "proc-macro"]
 categories = ["no-std", "rust-patterns"]
 
 [lib]
