@@ -35,7 +35,7 @@
 
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use quote::quote_spanned;
-use syn::{parse2, LitByteStr};
+use syn::{parse2, LitByteStr, LitStr};
 
 /// Expand byte string literals
 ///
@@ -94,28 +94,46 @@ fn _expand(input: TokenStream) -> TokenStream {
                     break;
                 };
 
-                let mut xs = if let Ok(t) = parse2::<LitByteStr>(tt.clone().into()) {
-                    t.value()
+                if let Ok(t) = parse2::<LitByteStr>(tt.clone().into()) {
+                    let mut xs = t
+                        .value()
                         .into_iter()
-                        .map(|x| TokenTree::Literal(Literal::u8_suffixed(x)))
+                        .map(|x| TokenTree::Literal(Literal::u8_suffixed(x)));
+                    if let Some(x) = xs.next() {
+                        output.extend(Some(x));
+                    } else {
+                        output.extend(quote_spanned! { tt.span() =>
+                            compile_error!("can't expand an empty byte string")
+                        });
+                        break;
+                    }
+
+                    for x in xs {
+                        output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
+                        output.extend(Some(x));
+                    }
+                } else if let Ok(t) = parse2::<LitStr>(tt.clone().into()) {
+                    let xs = t.value();
+                    let mut xs = xs
+                        .chars()
+                        .map(|c| TokenTree::Literal(Literal::character(c)));
+                    if let Some(x) = xs.next() {
+                        output.extend(Some(x));
+                    } else {
+                        output.extend(quote_spanned! { tt.span() =>
+                            compile_error!("can't expand an empty string")
+                        });
+                        break;
+                    }
+
+                    for x in xs {
+                        output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
+                        output.extend(Some(x));
+                    }
                 } else {
                     output.extend(Some(TokenTree::Punct(t)));
                     output.extend(Some(tt));
                     continue;
-                };
-
-                if let Some(x) = xs.next() {
-                    output.extend(Some(x));
-                } else {
-                    output.extend(quote_spanned! { tt.span() =>
-                        compile_error!("can't expand an empty byte string")
-                    });
-                    break;
-                }
-
-                for x in xs {
-                    output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
-                    output.extend(Some(x));
                 }
             }
             Some(t) => {
