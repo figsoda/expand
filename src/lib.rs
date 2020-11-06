@@ -95,7 +95,7 @@ fn _expand(input: TokenStream) -> TokenStream {
                 };
 
                 let mut xs = if let Ok(t) = parse2::<LitByteStr>(tt.clone().into()) {
-                    t.value().into_iter()
+                    t.value().into_iter().map(|x| TokenTree::Literal(Literal::u8_suffixed(x)))
                 } else {
                     output.extend(Some(TokenTree::Punct(t)));
                     output.extend(Some(tt));
@@ -103,7 +103,7 @@ fn _expand(input: TokenStream) -> TokenStream {
                 };
 
                 if let Some(x) = xs.next() {
-                    output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x))));
+                    output.extend(Some(x));
                 } else {
                     output.extend(quote_spanned! { tt.span() =>
                         compile_error!("can't expand an empty byte string")
@@ -113,7 +113,7 @@ fn _expand(input: TokenStream) -> TokenStream {
 
                 for x in xs {
                     output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
-                    output.extend(Some(TokenTree::Literal(Literal::u8_suffixed(x))));
+                    output.extend(Some(x));
                 }
             }
             Some(t) => {
