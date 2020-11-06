@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v0.2.0 - 2020-11-06
+
+### Features
+- `expand` now also expands string literals
+
+
 ## v0.1.3 - 2020-11-03
 
 ### Features
