@@ -4,7 +4,15 @@ use expand::expand;
 fn hello_world() {
     assert_eq!(
         &expand!([@b"Hello,", b' ', @b"world", b'!']),
-        b"Hello, world!"
+        b"Hello, world!",
+    );
+}
+
+#[test]
+fn hello_world_string() {
+    assert_eq!(
+        expand!(vec![@"Hello,", ' ', @"world", '!']),
+        "Hello, world!".chars().collect::<Vec<char>>(),
     );
 }
 
