@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/license-MPL--2.0-blue?style=flat-square)](https://www.mozilla.org/en-US/MPL/2.0)
 [![ci](https://img.shields.io/github/workflow/status/figsoda/expand/ci?label=ci&logo=github-actions&style=flat-square)](https://github.com/figsoda/expand/actions?query=workflow:ci)
 
-Macro to expand byte string literals
+Macro to expand byte string and string literals
 
 
 ## Usage
@@ -13,11 +13,19 @@ Macro to expand byte string literals
 ```rust
 use expand::expand;
 
+// expanding a byte string
 assert_eq!(
     &expand!([@b"Hello,", b' ', @b"world", b'!']),
     b"Hello, world!"
 );
 
+// expanding a string
+assert_eq!(
+    expand!(vec![@"Hello,", ' ', @"world", '!']),
+    "Hello, world!".chars().collect::<Vec<char>>(),
+);
+
+// pattern matching
 if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
     assert_eq!(x, &b'e');
     assert_eq!(y, &b'r');
@@ -25,6 +33,7 @@ if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
     panic!("pattern matching failed");
 }
 
+// more pattern matching
 if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
     assert_eq!(xs, b"Hello, world!");
 } else {

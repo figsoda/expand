@@ -1,4 +1,4 @@
-//! Macro to expand byte string literals
+//! Macro to expand byte string and string literals
 //!
 //!
 //! ## Usage
@@ -6,11 +6,19 @@
 //! ```rust
 //! use expand::expand;
 //!
+//! // expanding a byte string
 //! assert_eq!(
 //!     &expand!([@b"Hello,", b' ', @b"world", b'!']),
-//!     b"Hello, world!"
+//!     b"Hello, world!",
 //! );
 //!
+//! // expanding a string
+//! assert_eq!(
+//!     expand!(vec![@"Hello,", ' ', @"world", '!']),
+//!     "Hello, world!".chars().collect::<Vec<char>>(),
+//! );
+//!
+//! // pattern matching
 //! if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
 //!     assert_eq!(x, &b'e');
 //!     assert_eq!(y, &b'r');
@@ -18,6 +26,7 @@
 //!     panic!("pattern matching failed");
 //! }
 //!
+//! // more pattern matching
 //! if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
 //!     assert_eq!(xs, b"Hello, world!");
 //! } else {
@@ -39,18 +48,29 @@ use syn::{parse2, LitByteStr, LitStr};
 
 /// Expand byte string literals
 ///
-/// Prefix byte strings with `@` to expand them
+/// Prefix a byte string or a string literal with a `@` to expand it
 ///
 /// ## Examples
 ///
+/// ### expanding a byte string
 /// ```rust
 /// # use expand::expand;
 /// assert_eq!(
 ///     &expand!([@b"Hello,", b' ', @b"world", b'!']),
-///     b"Hello, world!"
+///     b"Hello, world!",
 /// );
 /// ```
 ///
+/// ### expanding a string
+/// ```rust
+/// # use expand::expand;
+/// assert_eq!(
+///     expand!(vec![@"Hello,", ' ', @"world", '!']),
+///     "Hello, world!".chars().collect::<Vec<char>>(),
+/// );
+/// ```
+///
+/// ### pattern matching
 /// ```rust
 /// # use expand::expand;
 /// if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
@@ -61,6 +81,7 @@ use syn::{parse2, LitByteStr, LitStr};
 /// }
 /// ```
 ///
+/// ### more pattern matching
 /// ``` rust
 /// # use expand::expand;
 /// if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {

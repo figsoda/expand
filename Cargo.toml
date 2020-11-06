@@ -4,12 +4,12 @@ version = "0.1.3"
 authors = ["figsoda <figsoda@pm.me>"]
 edition = "2018"
 license = "MPL-2.0"
-description = "Macro to expand byte string literals"
+description = "Macro to expand byte string and string literals"
 documentation = "https://docs.rs/expand"
 homepage = "https://github.com/figsoda/expand"
 repository = "https://github.com/figsoda/expand"
 readme = "README.md"
-keywords = ["macro", "macros", "literal", "pattern", "proc-macro"]
+keywords = ["macro", "macros", "literal", "pattern", "proc-macro", "string"]
 categories = ["no-std", "rust-patterns"]
 
 [lib]
