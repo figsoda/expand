@@ -95,7 +95,9 @@ fn _expand(input: TokenStream) -> TokenStream {
                 };
 
                 let mut xs = if let Ok(t) = parse2::<LitByteStr>(tt.clone().into()) {
-                    t.value().into_iter().map(|x| TokenTree::Literal(Literal::u8_suffixed(x)))
+                    t.value()
+                        .into_iter()
+                        .map(|x| TokenTree::Literal(Literal::u8_suffixed(x)))
                 } else {
                     output.extend(Some(TokenTree::Punct(t)));
                     output.extend(Some(tt));
