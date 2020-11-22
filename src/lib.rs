@@ -3,7 +3,7 @@
 //!
 //! ## Usage
 //!
-//! ```rust
+//! ```
 //! use expand::expand;
 //!
 //! // expanding a byte string
@@ -53,7 +53,7 @@ use syn::{parse2, LitByteStr, LitStr};
 /// ## Examples
 ///
 /// ### expanding a byte string
-/// ```rust
+/// ```
 /// # use expand::expand;
 /// assert_eq!(
 ///     &expand!([@b"Hello,", b' ', @b"world", b'!']),
@@ -62,7 +62,7 @@ use syn::{parse2, LitByteStr, LitStr};
 /// ```
 ///
 /// ### expanding a string
-/// ```rust
+/// ```
 /// # use expand::expand;
 /// assert_eq!(
 ///     expand!(vec![@"Hello,", ' ', @"world", '!']),
@@ -71,7 +71,7 @@ use syn::{parse2, LitByteStr, LitStr};
 /// ```
 ///
 /// ### pattern matching
-/// ```rust
+/// ```
 /// # use expand::expand;
 /// if let expand!([@b"patt", x, y, b'n', ..]) = b"pattern matching" {
 ///     assert_eq!(x, &b'e');
