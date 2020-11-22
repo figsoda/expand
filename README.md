@@ -7,6 +7,8 @@
 
 Macro to expand byte string and string literals
 
+[Documentation](https://docs.rs/expand)
+
 
 ## Usage
 
