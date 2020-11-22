@@ -39,8 +39,8 @@
 //!
 //! See [CHANGELOG.md](https://github.com/figsoda/expand/blob/main/CHANGELOG.md)
 
-#![no_std]
 #![forbid(unsafe_code)]
+#![no_std]
 
 use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use quote::quote_spanned;
