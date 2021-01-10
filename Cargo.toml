@@ -22,4 +22,4 @@ quote = "1.0.8"
 [dependencies.syn]
 version = "1.0.58"
 default-features = false
-features = ["proc-macro", "parsing"]
+features = ["parsing"]
