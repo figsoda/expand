@@ -46,4 +46,4 @@ if let expand!([@b"msg = \"", xs @ .., b'"']) = br#"msg = "Hello, world!""# {
 
 ## Changelog
 
-See [CHANGELOG.md](https://github.com/figsoda/expand/blob/main/CHANGELOG.md)
+See [CHANGELOG.md](CHANGELOG.md)
