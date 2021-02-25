@@ -19,7 +19,7 @@ jobs:
           profile: minimal
           toolchain: ${{ matrix.toolchain }}
           components: rust-docs
-          override: true
+          default: true
 
       - name: Cargo test
         uses: actions-rs/cargo@v1
@@ -39,7 +39,7 @@ jobs:
           profile: minimal
           toolchain: stable
           components: clippy
-          override: true
+          default: true
 
       - name: Cargo clippy
         uses: actions-rs/cargo@v1
@@ -60,7 +60,7 @@ jobs:
           profile: minimal
           toolchain: nightly
           components: rustfmt
-          override: true
+          default: true
 
       - name: Cargo fmt
         uses: actions-rs/cargo@v1
