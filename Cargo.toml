@@ -20,6 +20,6 @@ proc-macro2 = "1.0.26"
 quote = "1.0.9"
 
 [dependencies.syn]
-version = "1.0.69"
+version = "1.0.70"
 default-features = false
 features = ["parsing"]
