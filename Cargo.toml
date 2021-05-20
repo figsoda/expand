@@ -16,7 +16,7 @@ categories = ["no-std", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-proc-macro2 = "1.0.26"
+proc-macro2 = "1.0.27"
 quote = "1.0.9"
 
 [dependencies.syn]
