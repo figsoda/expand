@@ -3,67 +3,17 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        toolchain: [stable, beta, nightly]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
-
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1.0.7
-        with:
-          profile: minimal
-          toolchain: ${{ matrix.toolchain }}
-          components: rust-docs
-          default: true
-
-      - name: Cargo test
-        uses: actions-rs/cargo@v1.0.3
-        with:
-          command: test
-
-  clippy:
-    name: clippy
+  ci:
+    name: ci
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1.0.7
-        with:
-          profile: minimal
-          toolchain: stable
-          components: clippy
-          default: true
-
-      - name: Cargo clippy
-        uses: actions-rs/cargo@v1.0.3
-        with:
-          command: clippy
-          args: -- -D warnings
-
-  rustfmt:
-    name: rustfmt
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
-
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1.0.7
-        with:
-          profile: minimal
-          toolchain: nightly
-          components: rustfmt
-          default: true
-
-      - name: Cargo fmt
-        uses: actions-rs/cargo@v1.0.3
-        with:
-          command: fmt
-          args: -- --check
+      - name: "Cargo: test, clippy, fmt"
+        run: |
+          rustup toolchain install stable --profile minimal -c clippy
+          rustup toolchain install nightly --profile minimal -c rustfmt
+          cargo +stable test
+          cargo +stable clippy -- -D warnings
+          cargo +nightly fmt -- --check
