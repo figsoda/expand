@@ -16,10 +16,10 @@ categories = ["no-std", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-proc-macro2 = "1.0.32"
-quote = "1.0.10"
+proc-macro2 = "1.0.37"
+quote = "1.0.18"
 
 [dependencies.syn]
-version = "1.0.82"
+version = "1.0.92"
 default-features = false
 features = ["parsing"]
