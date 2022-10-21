@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.1 - 2022-10-21
+
+### Features
+- remove direct dedpendency on proc-macro2
+
 
 ## v0.2.0 - 2020-11-06
 

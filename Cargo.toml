@@ -1,6 +1,6 @@
 [package]
 name = "expand"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["figsoda <figsoda@pm.me>"]
 edition = "2021"
 description = "Macro to expand byte string and string literals"
@@ -16,9 +16,9 @@ categories = ["no-std", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-quote = "1.0.20"
+quote = "1.0.21"
 
 [dependencies.syn]
-version = "1.0.98"
+version = "1.0.103"
 default-features = false
 features = ["parsing", "proc-macro"]
