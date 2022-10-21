@@ -42,9 +42,9 @@
 #![forbid(unsafe_code)]
 #![no_std]
 
-use proc_macro2::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
+use proc_macro::{Group, Literal, Punct, Spacing, TokenStream, TokenTree};
 use quote::quote_spanned;
-use syn::{parse2, LitByteStr, LitStr};
+use syn::{parse, LitByteStr, LitStr};
 
 /// Expand byte string literals
 ///
@@ -91,11 +91,7 @@ use syn::{parse2, LitByteStr, LitStr};
 /// }
 /// ```
 #[proc_macro]
-pub fn expand(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    _expand(input.into()).into()
-}
-
-fn _expand(input: TokenStream) -> TokenStream {
+pub fn expand(input: TokenStream) -> TokenStream {
     let mut input = input.into_iter();
     let mut output = TokenStream::new();
 
@@ -104,7 +100,7 @@ fn _expand(input: TokenStream) -> TokenStream {
             Some(TokenTree::Group(t)) => {
                 output.extend(Some(TokenTree::Group(Group::new(
                     t.delimiter(),
-                    _expand(t.stream()),
+                    expand(t.stream()),
                 ))));
             }
             Some(TokenTree::Punct(t)) if t.as_char() == '@' => {
@@ -115,7 +111,7 @@ fn _expand(input: TokenStream) -> TokenStream {
                     break;
                 };
 
-                if let Ok(t) = parse2::<LitByteStr>(tt.clone().into()) {
+                if let Ok(t) = parse::<LitByteStr>(tt.clone().into()) {
                     let mut xs = t
                         .value()
                         .into_iter()
@@ -123,9 +119,12 @@ fn _expand(input: TokenStream) -> TokenStream {
                     if let Some(x) = xs.next() {
                         output.extend(Some(x));
                     } else {
-                        output.extend(quote_spanned! { tt.span() =>
-                            compile_error!("can't expand an empty byte string")
-                        });
+                        output.extend::<TokenStream>(
+                            quote_spanned! { tt.span().into() =>
+                                compile_error!("can't expand an empty byte string")
+                            }
+                            .into(),
+                        );
                         break;
                     }
 
@@ -133,7 +132,7 @@ fn _expand(input: TokenStream) -> TokenStream {
                         output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
                         output.extend(Some(x));
                     }
-                } else if let Ok(t) = parse2::<LitStr>(tt.clone().into()) {
+                } else if let Ok(t) = parse::<LitStr>(tt.clone().into()) {
                     let xs = t.value();
                     let mut xs = xs
                         .chars()
@@ -141,9 +140,12 @@ fn _expand(input: TokenStream) -> TokenStream {
                     if let Some(x) = xs.next() {
                         output.extend(Some(x));
                     } else {
-                        output.extend(quote_spanned! { tt.span() =>
-                            compile_error!("can't expand an empty string")
-                        });
+                        output.extend::<TokenStream>(
+                            quote_spanned! { tt.span().into() =>
+                                compile_error!("can't expand an empty string")
+                            }
+                            .into(),
+                        );
                         break;
                     }
 
