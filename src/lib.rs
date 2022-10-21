@@ -103,7 +103,8 @@ pub fn expand(input: TokenStream) -> TokenStream {
                     expand(t.stream()),
                 ))));
             }
-            Some(TokenTree::Punct(t)) if t.as_char() == '@' => {
+
+            Some(TokenTree::Punct(t)) if t == '@' => {
                 let tt = if let Some(tt) = input.next() {
                     tt
                 } else {
@@ -115,7 +116,9 @@ pub fn expand(input: TokenStream) -> TokenStream {
                     let mut xs = t
                         .value()
                         .into_iter()
-                        .map(|x| TokenTree::Literal(Literal::u8_suffixed(x)));
+                        .map(Literal::u8_suffixed)
+                        .map(TokenTree::Literal);
+
                     if let Some(x) = xs.next() {
                         output.extend(Some(x));
                     } else {
@@ -129,14 +132,12 @@ pub fn expand(input: TokenStream) -> TokenStream {
                     }
 
                     for x in xs {
-                        output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
-                        output.extend(Some(x));
+                        output.extend([TokenTree::Punct(Punct::new(',', Spacing::Alone)), x]);
                     }
                 } else if let Ok(t) = parse::<LitStr>(tt.clone().into()) {
                     let xs = t.value();
-                    let mut xs = xs
-                        .chars()
-                        .map(|c| TokenTree::Literal(Literal::character(c)));
+                    let mut xs = xs.chars().map(Literal::character).map(TokenTree::Literal);
+
                     if let Some(x) = xs.next() {
                         output.extend(Some(x));
                     } else {
@@ -150,18 +151,18 @@ pub fn expand(input: TokenStream) -> TokenStream {
                     }
 
                     for x in xs {
-                        output.extend(Some(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
-                        output.extend(Some(x));
+                        output.extend([TokenTree::Punct(Punct::new(',', Spacing::Alone)), x]);
                     }
                 } else {
-                    output.extend(Some(TokenTree::Punct(t)));
-                    output.extend(Some(tt));
+                    output.extend([TokenTree::Punct(t), tt]);
                     continue;
                 }
             }
+
             Some(t) => {
                 output.extend(Some(t));
             }
+
             None => break,
         }
     }
