@@ -16,9 +16,9 @@ categories = ["no-std", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-quote = "1.0.21"
+quote = "1.0.26"
 
 [dependencies.syn]
-version = "1.0.103"
+version = "2.0.0"
 default-features = false
 features = ["parsing", "proc-macro"]
