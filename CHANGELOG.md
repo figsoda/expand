@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0 - 2023-03-18
+
+### Features
+- Upgrade to syn 2
+
+### Fixes
+- Fix CI badge
+
 ## v0.2.1 - 2022-10-21
 
 ### Features

@@ -1,6 +1,6 @@
 [package]
 name = "expand"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["figsoda <figsoda@pm.me>"]
 edition = "2021"
 description = "Macro to expand byte string and string literals"
